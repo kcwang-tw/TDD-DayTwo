@@ -15,9 +15,7 @@ namespace PotterShoppingCart
         public int CheckOut(List<PotterSeries> order)
         {
             int count = order.Sum(x => x.Quantity);
-            double discount = 1;
-            if (count > 1)
-                discount = 0.95;
+            double discount = 1 - (count - 1) * 0.05;
 
             return (int)(100 * count * discount);
         }

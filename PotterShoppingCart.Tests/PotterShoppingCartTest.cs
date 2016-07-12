@@ -1,5 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
+using PotterShoppingCart;
 
 namespace PotterShoppingCart.Tests
 {
@@ -7,9 +9,21 @@ namespace PotterShoppingCart.Tests
     public class PotterShoppingCartTest
     {
         [TestMethod]
-        public void Test_Assert_failed()
+        public void Test_Buy_one_price_should_be_100()
         {
-            Assert.Fail();
+            // arrange
+            var target = new ShoppingCart();
+            var order = new List<PotterSeries>
+            {
+                new PotterSeries { Volume = "One", Quantity = 1 }
+            };
+
+            // act
+            int actual = target.CheckOut(order);
+            var expected = 100;
+
+            // assert
+            Assert.AreEqual(expected, actual);
         }
     }
 }

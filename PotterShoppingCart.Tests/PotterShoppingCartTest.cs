@@ -107,5 +107,25 @@ namespace PotterShoppingCart.Tests
             // assert
             Assert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void Test_Buy_1_volumeOne_and_1_volumeTwo_and_2_volumeThree_price_should_be_370()
+        {
+            // arrange
+            var target = new ShoppingCart();
+            var order = new List<PotterSeries>
+            {
+                new PotterSeries { Volume = "One", Quantity = 1 },
+                new PotterSeries { Volume = "Two", Quantity = 1 },
+                new PotterSeries { Volume = "Three", Quantity = 2 }
+            };
+
+            // act
+            int actual = target.CheckOut(order);
+            var expected = 370;
+
+            // assert
+            Assert.AreEqual(expected, actual);
+        }
     }
 }

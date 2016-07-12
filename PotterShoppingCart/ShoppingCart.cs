@@ -15,9 +15,15 @@ namespace PotterShoppingCart
         public int CheckOut(List<PotterSeries> order)
         {
             int count = order.Sum(x => x.Quantity);
-            double discount = 1 - (count - 1) * 0.05;
+            Dictionary<int, double> discount = new Dictionary<int, double>
+            {
+                { 1, 1 },
+                { 2, 0.95 },
+                { 3, 0.9 },
+                { 4, 0.8 }
+            };
 
-            return (int)(100 * count * discount);
+            return (int)(100 * count * discount[count]);
         }
     }
 }

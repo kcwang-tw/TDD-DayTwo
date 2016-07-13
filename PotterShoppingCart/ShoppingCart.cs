@@ -14,17 +14,18 @@ namespace PotterShoppingCart
         /// <returns></returns>
         public int CheckOut(List<PotterSeries> order)
         {
-            int tatal = order.Sum(x => x.Quantity);
+            var price = 0;
 
-            // 計算單集多買的數量
-            int additionalCount = GetAdditionalCount(order);
+            // 取得各買一集的最大本數
+            var maxQuantity = order.Max(x => x.Quantity);
 
-            int eachVolumesCount = tatal - additionalCount;
+            for (int i = 1; i <= maxQuantity; i++)
+            {
+                int nowQuantity = GetAdditionalVolumesCount(order, i);
+                price += (int)(100 * nowQuantity * GetDisCount(nowQuantity));
+            }
 
-            // 取得折扣
-            double discount = GetDisCount(eachVolumesCount);
-
-            return (int)(100 * eachVolumesCount * discount + 100 * additionalCount);
+            return price;
         }
 
         /// <summary>
@@ -47,13 +48,14 @@ namespace PotterShoppingCart
         }
 
         /// <summary>
-        /// 取得每一集多買的本數。
+        /// 取得每一集買特定本數的集數。
         /// </summary>
         /// <param name="order">訂單。</param>
+        /// <param name="quantity">購買的本數。</param>
         /// <returns></returns>
-        private int GetAdditionalCount(List<PotterSeries> order)
+        private int GetAdditionalVolumesCount(List<PotterSeries> order, int quantity)
         {
-            var additionalBooks = order.Where(x => x.Quantity > 1).Sum(x => x.Quantity - 1);
+            var additionalBooks = order.Where(x => x.Quantity >= quantity).Count();
 
             return additionalBooks;
         }

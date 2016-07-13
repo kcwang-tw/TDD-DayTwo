@@ -21,16 +21,29 @@ namespace PotterShoppingCart
 
             int eachVolumesCount = tatal - additionalCount;
 
+            // 取得折扣
+            double discount = GetDisCount(eachVolumesCount);
+
+            return (int)(100 * eachVolumesCount * discount + 100 * additionalCount);
+        }
+
+        /// <summary>
+        /// 依據本數取得折扣。
+        /// </summary>
+        /// <param name="count">書本數量。</param>
+        /// <returns></returns>
+        private double GetDisCount(int count)
+        {
             Dictionary<int, double> discount = new Dictionary<int, double>
             {
+                { 0, 0 },
                 { 1, 1 },
                 { 2, 0.95 },
                 { 3, 0.9 },
                 { 4, 0.8 },
                 { 5, 0.75 }
             };
-
-            return (int)(100 * eachVolumesCount * discount[eachVolumesCount] + 100 * additionalCount);
+            return discount[count];
         }
 
         /// <summary>
@@ -40,13 +53,9 @@ namespace PotterShoppingCart
         /// <returns></returns>
         private int GetAdditionalCount(List<PotterSeries> order)
         {
-            int additionalCount = 0;
-            foreach (var item in order)
-            {
-                if (item.Quantity > 1)
-                    additionalCount++;
-            }
-            return additionalCount;
+            var additionalBooks = order.Where(x => x.Quantity > 1).Sum(x => x.Quantity - 1);
+
+            return additionalBooks;
         }
     }
 }

@@ -14,17 +14,12 @@ namespace PotterShoppingCart
         /// <returns></returns>
         public int CheckOut(List<PotterSeries> order)
         {
-            int count = order.Sum(x => x.Quantity);
+            int tatal = order.Sum(x => x.Quantity);
 
             // 計算單集多買的數量
-            int additionalCount = 0;
-            foreach (var item in order)
-            {
-                if (item.Quantity > 1)
-                    additionalCount++;
-            }
+            int additionalCount = GetAdditionalCount(order);
 
-            int volumesCount = count - additionalCount;
+            int eachVolumesCount = tatal - additionalCount;
 
             Dictionary<int, double> discount = new Dictionary<int, double>
             {
@@ -35,7 +30,23 @@ namespace PotterShoppingCart
                 { 5, 0.75 }
             };
 
-            return (int)(100 * volumesCount * discount[volumesCount] + 100 * additionalCount);
+            return (int)(100 * eachVolumesCount * discount[eachVolumesCount] + 100 * additionalCount);
+        }
+
+        /// <summary>
+        /// 取得每一集多買的本數。
+        /// </summary>
+        /// <param name="order">訂單。</param>
+        /// <returns></returns>
+        private int GetAdditionalCount(List<PotterSeries> order)
+        {
+            int additionalCount = 0;
+            foreach (var item in order)
+            {
+                if (item.Quantity > 1)
+                    additionalCount++;
+            }
+            return additionalCount;
         }
     }
 }

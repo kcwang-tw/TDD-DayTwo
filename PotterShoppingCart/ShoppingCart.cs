@@ -55,7 +55,7 @@ namespace PotterShoppingCart
         /// <returns></returns>
         private int GetAdditionalVolumesCount(List<PotterSeries> order, int quantity)
         {
-            var additionalBooks = order.Where(x => x.Quantity >= quantity).Count();
+            var additionalBooks = order.Count(x => x.Quantity >= quantity);
 
             return additionalBooks;
         }
